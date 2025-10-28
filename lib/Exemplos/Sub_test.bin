@@ -1,0 +1,7 @@
+OPCODES:
+  0x01 MOV_REG_IMM   ; format: [01][reg][imm_lo][imm_hi]
+  0x02 MOV_REG_REG   ; format: [02][dst][src]
+  0x03 ADD_REG_REG   ; format: [03][dst][src]
+  0x10 JMP           ; format: [10][addr_lo][addr_hi]
+  0x11 JZ            ; format: [11][addr_lo][addr_hi]  ; jump if Z flag set
+  0xFF HLT           ; format: [FF]

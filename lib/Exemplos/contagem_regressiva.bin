@@ -1,0 +1,8 @@
+    MOV R0, #3          ; inicial contador
+    MOV R7, #0xFFFF     ; constante -1
+LOOP:
+    ADD R0, R7          ; R0 = R0 - 1
+    JZ END              ; se zero, sai
+    JMP LOOP
+END:
+    HLT

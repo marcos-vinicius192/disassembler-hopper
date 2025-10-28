@@ -1,0 +1,12 @@
+    MOV R0, #0        ; acumulador (resultado)
+    MOV R1, #4        ; multiplicando
+    MOV R2, #3        ; multiplicador
+    MOV R3, R2        ; contador = R2
+    MOV R7, #0xFFFF   ; -1 para decrementar
+LOOP:
+    ADD R0, R1        ; R0 += R1
+    ADD R3, R7        ; R3 -= 1  (Z set se chegou a 0)
+    JZ END
+    JMP LOOP
+END:
+    HLT
