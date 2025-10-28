@@ -151,6 +151,6 @@ flowchart TB
 ````
 
 ### Roadmap
-- [] Aprimorar Interface de Terminal (TUI) com a biblioteca Curses ou TKinter
-- [] Mais algoritmos de exemplo
-- [] Mais operações e instruções para serem disponíveis
+- [ ] Aprimorar Interface de Terminal (TUI) com a biblioteca Curses ou TKinter
+- [ ] Mais algoritmos de exemplo
+- [ ] Mais operações e instruções para serem disponíveis
