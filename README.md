@@ -85,7 +85,7 @@ END:
 
 ```
 
-#### <center> Diagrama (mermaid) de Sistema </center>
+#### <center> Diagrama (mermaid) do Sistema </center>
 ```mermaid
 flowchart TB
   HOPPER["Hopper.py\nContador: 0"] --> MENU["Menu (loop_menu)\nOpções:\n1) Carregar arquivo binário (carregar_arquivo)\n2) Desmontar (desmontar)\n3) Executar (executar_todos_passos)\n4) Modo Passo-a-passo (cada_passo)\n5) Mostrar registradores (CPU.dump)\n6) Salvar desmontagem (salvar_desmontagem)\n7) Sair"]
@@ -149,3 +149,8 @@ flowchart TB
   SALVAR --> FS[(Sistema de Arquivos)]
 
 ````
+
+### Roadmap
+- [] Aprimorar Interface de Terminal (TUI) com a biblioteca Curses ou TKinter
+- [] Mais algoritmos de exemplo
+- [] Mais operações e instruções para serem disponíveis
