@@ -84,3 +84,68 @@ END:
     HLT
 
 ```
+
+#### <center> Diagrama (mermaid) de Sistema </center>
+```mermaid
+flowchart TB
+  HOPPER["Hopper.py\nContador: 0"] --> MENU["Menu (loop_menu)\nOpções:\n1) Carregar arquivo binário (carregar_arquivo)\n2) Desmontar (desmontar)\n3) Executar (executar_todos_passos)\n4) Modo Passo-a-passo (cada_passo)\n5) Mostrar registradores (CPU.dump)\n6) Salvar desmontagem (salvar_desmontagem)\n7) Sair"]
+
+  MENU --> CARREGAR["carregar_arquivo(path)"]
+  CARREGAR --> BYTES["bytes_lidos (bytes) - conteúdo bruto lido"]
+
+  BYTES --> DESM["desmontar(bytes_lidos)\n-> lista de linhas (cache_desmont)"]
+  DESM --> IMPR["imprimir_desmont(lines)"]
+  DESM --> SALVAR["salvar_desmontagem(lines, caminho_saida)"]
+
+  BYTES --> MEMLOAD["memoria_de_bytes_lidos(bytes_lidos)\n-> bytearray(TAMNH_MEMO)"]
+  MEMLOAD --> MEM["Memória (bytearray)\nTAMNH_MEMO = 0x10000 (65536 bytes)"]
+
+  MEM --> EXEC["executar_todos_passos(mem, cpu, tamnh_programa=len(bytes_lidos))"]
+  EXEC --> CPUOBJ["CPU (classe CPU)"]
+
+  subgraph CPU["Estrutura da CPU (instância)"]
+    REGS["regs: R0..R7 (8 registradores, 16-bit)"]
+    PC["pc: Contador de Programa (inicio 0)"]
+    FLAGS["bandeira: {'Z': bool} (Zero flag)"]
+    HALT["parou: bool (HLT)"]
+  end
+
+  CPUOBJ --> REGS
+  CPUOBJ --> PC
+  CPUOBJ --> FLAGS
+  CPUOBJ --> HALT
+
+  %% Helpers
+  subgraph HELPERS["Funções auxiliares / Fetch & Parsers"]
+    U8["u8(data, idx)"]
+    U16["u16_le(data, idx)"]
+    FETCH8["fetch_u8(mem, addr)"]
+    FETCH16["fetch_u16_le(mem, addr)"]
+  end
+
+  DESM --> U8
+  DESM --> U16
+  EXEC --> FETCH8
+  EXEC --> FETCH16
+
+  %% Opcodes (detalhados)
+  subgraph OPCODES["Conjunto de Instruções / Opcodes (implementadas)"]
+    O1["0x01 MOV_REG_IMM\nFormato: [01][reg][imm_lo][imm_hi]\nSemântica: R[reg] = imediato"]
+    O2["0x02 MOV_REG_REG\nFormato: [02][dst][src]\nSemântica: R[dst] = R[src]"]
+    O3["0x03 ADD_REG_REG\nFormato: [03][dst][src]\nSemântica: R[dst] = R[dst] + R[src]; Z set se zero"]
+    O4["0x10 JMP\nFormato: [10][addr_lo][addr_hi]\nSemântica: pc = endereço"]
+    O5["0x11 JZ\nFormato: [11][addr_lo][addr_hi]\nSemântica: if Z then pc = endereço"]
+    O6["0xFF HLT\nFormato: [FF]\nSemântica: parou = True"]
+  end
+
+  EXEC --> OPCODES
+  OPCODES --> CPUOBJ
+
+  %% Saída / Interação
+  EXEC --> OUTPUT["Console / Saídas (print)\nModo passo-a-passo -> prompt 'modo-passo>'"]
+  CPUOBJ --> OUTPUT
+
+  %% Salvamento / FS
+  SALVAR --> FS[(Sistema de Arquivos)]
+
+````
